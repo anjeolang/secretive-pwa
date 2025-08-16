@@ -11,9 +11,10 @@
 <div id="qrmaContent"></div>
 
 <script>
-fetch('assets/QRMA.txt')
+fetch('https://raw.githubusercontent.com/anjeolang/qrma-app/main/assets/QRMA.txt')
   .then(response => response.text())
   .then(text => {
+    // dito lahat ng processing ng QRMA.txt
     const container = document.getElementById('qrmaContent');
     const lines = text.split('\n');
     let html = '';

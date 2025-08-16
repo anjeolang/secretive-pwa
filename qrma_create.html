@@ -24,7 +24,7 @@
     <label>Date: <input type="date" id="date"></label>
     <label>Note: <input type="text" id="note"></label>
 
-    <div id="indicators"></div>
+    <div id="indicators">Loading indicators...</div>
     <button type="button" id="seeResult">See Result</button>
   </form>
 </div>
@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const indicatorsDiv = document.getElementById("indicators");
 
   // Load indicators dynamically from QRMA.txt
-  const qrmaURL = 'assets/QRMA.txt'; // o raw GitHub URL kapag online
+  const qrmaURL = 'https://raw.githubusercontent.com/anjeolang/qrma-app/main/assets/QRMA.txt';
 
   fetch(qrmaURL)
     .then(res => res.text())
@@ -91,10 +91,10 @@ document.addEventListener("DOMContentLoaded", () => {
     let resultText = `Name: ${name}\nAge: ${age}\nGender: ${gender}\nAddress: ${address}\nDate: ${date}\nNote: ${note}\n\n`;
 
     document.querySelectorAll('#indicators label').forEach(label => {
-      const text = label.childNodes[0].textContent.trim();
+      const indicator = label.childNodes[0].textContent.trim();
       const selected = label.querySelector('input[type="radio"]:checked');
       const noteVal = label.querySelector('input[type="text"]').value;
-      resultText += `${text}: ${selected ? selected.value : 'Not selected'}\n  Note: ${noteVal}\n`;
+      resultText += `${indicator}: ${selected ? selected.value : 'Not selected'}\n  Note: ${noteVal}\n`;
     });
 
     resultArea.textContent = resultText;
