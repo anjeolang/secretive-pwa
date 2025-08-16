@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QRMA - Create Result</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- CREATE SCREEN -->
+<div id="createScreen">
+  <h1>QRMA - Create Result</h1>
+  <form id="createForm">
+    <label>Name: <input type="text" id="name" required></label>
+    <label>Age: <input type="number" id="age" required></label>
+    <label>Gender:
+      <select id="gender">
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+    </label>
+    <label>Address: <input type="text" id="address"></label>
+    <label>Date: <input type="date" id="date"></label>
+    <label>Note: <input type="text" id="note"></label>
+
+    <div id="indicators"></div>
+    <button type="button" id="seeResult">See Result</button>
+  </form>
+</div>
+
+<!-- RESULT SCREEN -->
+<div id="resultScreen" style="display:none;">
+  <h2>Result</h2>
+  <pre id="resultArea" style="white-space: pre-wrap;"></pre>
+  <button id="backBtn">Back</button>
+  <button id="saveResult">Save Result</button>
+  <button id="printResult">Print Result</button>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const createScreen = document.getElementById("createScreen");
+  const resultScreen = document.getElementById("resultScreen");
+  const indicatorsDiv = document.getElementById("indicators");
+
+  // Load indicators dynamically from QRMA.txt
+  const qrmaURL = 'assets/QRMA.txt'; // o raw GitHub URL kapag online
+
+  fetch(qrmaURL)
+    .then(res => res.text())
+    .then(text => {
+      const lines = text.split('\n');
+      let html = '';
+      lines.forEach(line => {
+        if(line.trim() === '') return;
+        if(line === line.toUpperCase()){
+          html += `<h3>${line}</h3>`;
+        } else {
+          html += `<label>${line} 
+            <input type="radio" name="${line}" value="High">High
+            <input type="radio" name="${line}" value="Low">Low
+            <input type="text" name="${line}_note" placeholder="Type note here">
+          </label><br>`;
+        }
+      });
+      indicatorsDiv.innerHTML = html;
+    })
+    .catch(err => {
+      indicatorsDiv.innerText = "Failed to load QRMA.txt";
+      console.error(err);
+    });
+
+  const seeBtn = document.getElementById("seeResult");
+  const backBtn = document.getElementById("backBtn");
+  const saveBtn = document.getElementById("saveResult");
+  const printBtn = document.getElementById("printResult");
+  const resultArea = document.getElementById("resultArea");
+
+  // SEE RESULT - switch screen
+  seeBtn.addEventListener("click", ()=>{
+    const name = document.getElementById("name").value.trim();
+    if(!name) return alert("Name is required");
+
+    const age = document.getElementById("age").value;
+    const gender = document.getElementById("gender").value;
+    const address = document.getElementById("address").value;
+    const date = document.getElementById("date").value;
+    const note = document.getElementById("note").value;
+
+    let resultText = `Name: ${name}\nAge: ${age}\nGender: ${gender}\nAddress: ${address}\nDate: ${date}\nNote: ${note}\n\n`;
+
+    document.querySelectorAll('#indicators label').forEach(label => {
+      const text = label.childNodes[0].textContent.trim();
+      const selected = label.querySelector('input[type="radio"]:checked');
+      const noteVal = label.querySelector('input[type="text"]').value;
+      resultText += `${text}: ${selected ? selected.value : 'Not selected'}\n  Note: ${noteVal}\n`;
+    });
+
+    resultArea.textContent = resultText;
+
+    // Switch screens
+    createScreen.style.display = 'none';
+    resultScreen.style.display = 'block';
+  });
+
+  // BACK button
+  backBtn.addEventListener("click", ()=>{
+    createScreen.style.display = 'block';
+    resultScreen.style.display = 'none';
+  });
+
+  // SAVE RESULT
+  saveBtn.addEventListener("click", ()=>{
+    const name = document.getElementById("name").value.trim();
+    if(!name) return alert("Name required to save");
+    const content = resultArea.textContent;
+    if(!content) return alert("No result to save");
+    localStorage.setItem(`client_${name}`, content);
+    alert("Result saved!");
+  });
+
+  // PRINT RESULT
+  printBtn.addEventListener("click", ()=>{
+    const content = resultArea.textContent;
+    if(!content) return alert("No result to print");
+    const printWindow = window.open('', '', 'height=600,width=800');
+    printWindow.document.write('<pre>' + content + '</pre>');
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+  });
+
+});
+</script>
+
+</body>
+</html>

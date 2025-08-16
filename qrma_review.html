@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QRMA Review</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>QRMA Review</h1>
+<div id="qrmaContent"></div>
+
+<script>
+fetch('assets/QRMA.txt')
+  .then(response => response.text())
+  .then(text => {
+    const container = document.getElementById('qrmaContent');
+    const lines = text.split('\n');
+    let html = '';
+    lines.forEach(line => {
+      if(line.trim() === '') return;
+      if(line === line.toUpperCase() && !line.startsWith('  ')){
+        html += `<h2>${line}</h2>`;
+      } else {
+        html += `<p>${line}</p>`;
+      }
+    });
+    container.innerHTML = html;
+  })
+  .catch(err => {
+    document.getElementById('qrmaContent').innerText = "Failed to load QRMA.txt";
+    console.error(err);
+  });
+</script>
+</body>
+</html>
