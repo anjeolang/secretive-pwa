@@ -1,1 +1,20 @@
+﻿CARDIOVASCULAR AND CEREBROVASCULAR
+Blood Viscosity
+  Meaning: Measures thickness of blood
+  High: Risk of clotting
+  Low: Risk of anemia
+  Advice High: Drink water, consult doctor
+  Advice Low: Iron rich food, supplements
+Blood Fat
+  Meaning: Cholesterol & triglycerides level
+  High: Risk of heart disease
+  Low: Risk of energy deficiency
+  Advice High: Reduce fats, exercise
+  Advice Low: Balanced diet, healthy fats
 
+KIDNEY
+Creatinine
+  Meaning: Kidney function indicator
+  High: Kidney stress
+  Low: Rarely significant
+  Advice High: Hydrate, consult doctor
