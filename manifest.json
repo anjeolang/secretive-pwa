@@ -1,7 +1,7 @@
 {
   "name": "SECRETIVE",
   "short_name": "SECRETIVE",
-  "start_url": ""start_url": "index.html",
+  "start_url": ""start_url": "https://anjeolang.github.io/secretive-pwa/index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#1e90ff",
